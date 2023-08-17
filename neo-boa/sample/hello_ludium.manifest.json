@@ -1,0 +1,49 @@
+{
+    "name": "hello_ludium",
+    "groups": [],
+    "abi": {
+        "methods": [
+            {
+                "name": "_deploy",
+                "offset": 63,
+                "parameters": [
+                    {
+                        "type": "Any",
+                        "name": "data"
+                    },
+                    {
+                        "type": "Boolean",
+                        "name": "update"
+                    }
+                ],
+                "safe": false,
+                "returntype": "Void"
+            },
+            {
+                "name": "get_message",
+                "offset": 0,
+                "parameters": [],
+                "safe": false,
+                "returntype": "String"
+            },
+            {
+                "name": "set_message",
+                "offset": 33,
+                "parameters": [
+                    {
+                        "type": "String",
+                        "name": "new_message"
+                    }
+                ],
+                "safe": false,
+                "returntype": "Void"
+            }
+        ],
+        "events": []
+    },
+    "permissions": [],
+    "trusts": [],
+    "features": {},
+    "supportedstandards": [],
+    "extra": null
+}

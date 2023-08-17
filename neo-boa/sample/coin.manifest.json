@@ -1,0 +1,21 @@
+{
+    "name": "coin",
+    "groups": [],
+    "abi": {
+        "methods": [
+            {
+                "name": "totalSupply",
+                "offset": 0,
+                "parameters": [],
+                "safe": true,
+                "returntype": "Integer"
+            }
+        ],
+        "events": []
+    },
+    "permissions": [],
+    "trusts": [],
+    "features": {},
+    "supportedstandards": [],
+    "extra": null
+}
