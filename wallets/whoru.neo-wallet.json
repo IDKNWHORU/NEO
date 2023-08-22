@@ -1,0 +1,29 @@
+{
+  "name": "whoru",
+  "version": "1.0",
+  "scrypt": {
+    "n": 16384,
+    "r": 8,
+    "p": 8,
+    "size": 64
+  },
+  "accounts": [
+    {
+      "address": "NSx6epjFDGmAX1h2j8XWB1ANDTkiLfgVws",
+      "label": "Default account",
+      "isDefault": true,
+      "lock": false,
+      "key": "6PYNmwAreW83VbyEgjFWn3soqPuCHFzAhDdQhY9ukgCPhNXpVF5TKH828Z",
+      "contract": {
+        "script": "DCEDxhf77Lqi0lLx2hhc0N7+45lHNuJPURkPRFu0obB1Y1tBVuezJw==",
+        "parameters": [
+          {
+            "name": "signature",
+            "type": "Signature"
+          }
+        ],
+        "deployed": false
+      }
+    }
+  ]
+}
