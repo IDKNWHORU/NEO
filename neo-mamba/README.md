@@ -70,7 +70,9 @@ async def main():
     # shared 폴더에 NEP6 형식을 따르는 test-nep6.json 파일을 추가한다.
     # json 파일과 비밀번호는 본인이 원하는 형식으로 변경한다.
     # 예를 들어, shared/my-wallet.json 파일로 만들었고, 비밀번호가 5678이면 아래처럼 코드를 작성한다.
-    # user_wallet = Wallet.from_file(f"{shared_dir}/my-wallet.json", passwords=["5678"])
+    # facade.add_signer(sign_insecure_with_account(account, password="5678"),
+    #                       Signer(account.script_hash)
+    #                       )
     facade.add_signer(sign_insecure_with_account(account, password="1234"),
                       Signer(account.script_hash)
                       )
