@@ -322,3 +322,4 @@ def get_owner() -> UInt160:
 ```sh
 $ neo3-boa compile example/nep17.py
 ```
+명령어가 정상 실행된 후 `nep17.manifest.json`, `nep17.nef` 파일이 추가된다. 
