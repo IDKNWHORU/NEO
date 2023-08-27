@@ -36,9 +36,15 @@ export const NeolineSignleton = {
 ```js
 import { NeolineSignleton } from "./NeolineSingleton";
 
+/**
+ * Neoline chrome 확장 프로그램이 설치되어 있어야 Neoline 라이브러리를 사용할 수 있는지 모니터링 할 수 있다.
+ * 지금 모니터링하고 있는 이벤트 목록: NEOLine.NEO.EVENT.READY, NEOLine.N3.EVENT.READY
+ * 
+ */
 export function initDapi(setIsLoading, setMessage) {
     const initCommonDapi = new Promise((resolve, reject) => {
         window.addEventListener('NEOLine.NEO.EVENT.READY', () => {
+            // NeolineSignleton 객체의 neoline에 NEOLine API를 사용할 수 있게 설정한다.
             NeolineSignleton.neoline = new window.NEOLine.Init();
             if (NeolineSignleton.neoline) {
                 resolve(NeolineSignleton.neoline);
@@ -49,6 +55,7 @@ export function initDapi(setIsLoading, setMessage) {
     });
     const initN3Dapi = new Promise((resolve, reject) => {
         window.addEventListener('NEOLine.N3.EVENT.READY', () => {
+            // NeolineSignleton 객체의 neolineN3에 NEOLineN3 API를 사용할 수 있게 설정한다.
             NeolineSignleton.neolineN3 = new window.NEOLineN3.Init();
             if (NeolineSignleton.neolineN3) {
                 resolve(NeolineSignleton.neolineN3);
@@ -68,6 +75,8 @@ export function initDapi(setIsLoading, setMessage) {
         console.log(err);
     })
 
+    // Neoline API를 사용하는 설정이 되었는지 약 3초의 시간을 대기한다.
+    // 설정되어 있지 않다면 Neoline Chrome 확장 프로그램이 설치되어있는지 물어보는 메시지를 UI에 출력한다.
     setTimeout(() => {
         if(NeolineSignleton.neoline === undefined) {
             setMessage('만약 Neoline이 설치되어 있지 않다면 https://chrome.google.com/webstore/detail/neoline/cphhlgmgameodnhkjdmkpanlelnlohao에서 Neoline을 설치해주세요')
@@ -84,6 +93,9 @@ import { NeolineSignleton } from './NeolineSingleton';
 import { initDapi } from './NeolineConnect';
 
 function App() {
+  /**
+   * UI에 데이터를 표현하기 위한 데이터의 상태를 정의하는 부분
+   */
   const [isLoading, setIsLoading] = useState(true);
   const [isUserDataLoading, setIsUserDataLoading] = useState(false);
   const [message, setMessage] = useState('NeoLine 데이터를 불러오는 중입니다.');
@@ -95,7 +107,14 @@ function App() {
   const [amount, setAmount] = useState(0);
   const [symbol, setSymbol] = useState('');
 
+  /**
+   * UI와 DApp간 상호 작용을 하기 위한 함수를 정의하는 부분
+   */
+
   const getUserData = _ => {
+    /**
+     * Neoline chrome 확장 프로그램에 접속한 계정의 데이터를 가져온다
+     */
     NeolineSignleton.neolineN3.getBalance().then(result => {
       if(!isUserDataLoading) {
         NeolineSignleton.neolineN3.AddressToScriptHash({ address: Object.keys(result)[0] }).then(({ scriptHash }) => { setAddressScriptHash(scriptHash) });
@@ -110,11 +129,9 @@ function App() {
     })
   }
 
-  const toastMessage = message => {
-    setMessage(message);
-    setTimeout(() => { setMessage('') }, 2000);
-  }
-
+  /**
+   * NEO, GAS, LUDIUM 토큰을 사용자가 입력한 주소로 보내는 기능
+   */
   const send = _ => {
     switch (symbol) {
       case 'NEO': case 'GAS':
@@ -147,6 +164,14 @@ function App() {
     }
   }
 
+  /**
+   * UI의 상태 값을 변경하는 함수
+   */
+  const toastMessage = message => {
+    setMessage(message);
+    setTimeout(() => { setMessage('') }, 2000);
+  }
+
   const putAddress = ({ target }) => {
     setTargetAddress(target.value)
   }
@@ -159,10 +184,20 @@ function App() {
     setSymbol(target.value);
   }
 
+  /**
+   * Neoline에 등록 된 사용자의 자산 정보를 UI에 표현한다.
+   */
+
   const Balances = asset.map(({ amount, symbol }) => (
     <li key={symbol}>{symbol}: {amount}</li>
   ));
 
+  /**
+   * App 화면이 호출된 때 함수를 호출하는 부분
+   * 시나리오
+   * 1. Neoline 라이브러리 초기화
+   * 2. Neoline에서 사용자 데이터 조회
+   */
   if (isLoading) {
     initDapi(setIsLoading, setMessage);
   } else {
@@ -207,7 +242,13 @@ function App() {
 
 export default App;
 ```
+## App, NeolineConnect, NeolineSingleton 모듈의 상호작용
+![모듈 간 상호 작용 참고 자료 1](https://github.com/IDKNWHORU/neo/assets/49608580/5d85688f-7107-47c2-a0b4-426428c913a5)
+![모듈 간 상호 작용 참고 자료 2](https://github.com/IDKNWHORU/neo/assets/49608580/a2a63812-de92-4970-a90e-aed3f6231be2)
 
 ## 실행
-터미널에서 아래 명령어를 실행한다
+터미널에서 아래 명령어를 실행한다.
 `npm run start`
+
+아래와 같은 화면이 나타나는지 확인한다.
+![실행 화면](https://github.com/IDKNWHORU/neo/assets/49608580/0e8c658e-579d-43f2-a074-4aae15109313)
